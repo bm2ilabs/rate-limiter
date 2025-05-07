@@ -2,7 +2,7 @@
     "name": "bm2ilabs/rate-limiter",
     "description": "Multi-period rate limiting for Laravel applications with minute, hour, and day limits",
     "type": "library",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "license": "MIT",
     "autoload": {
         "psr-4": {
