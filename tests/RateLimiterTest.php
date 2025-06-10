@@ -30,7 +30,7 @@ class RateLimiterTest extends TestCase
         return ['Amineware\RateLimiter\RateLimiterServiceProvider'];
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_adds_rate_limit_headers_to_response()
     {
         $request = Request::create('/test', 'GET');
@@ -51,7 +51,7 @@ class RateLimiterTest extends TestCase
         $this->assertEquals(999, $response->headers->get('X-RateLimit-Remaining-Day'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_decrements_remaining_attempts_on_each_request()
     {
         $request = Request::create('/test', 'GET');
@@ -74,7 +74,7 @@ class RateLimiterTest extends TestCase
         $this->assertEquals(8, $response2->headers->get('X-RateLimit-Remaining'));
     }
 
-    /** @test */
+    #[\PHPUnit\Framework\Attributes\Test]
     public function it_returns_429_response_when_limit_is_exceeded()
     {
         $request = Request::create('/test', 'GET');
