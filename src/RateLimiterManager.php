@@ -19,10 +19,6 @@ class RateLimiterManager
 
     /**
      * Get the number of remaining attempts for a given period and key.
-     *
-     * @param  string  $period
-     * @param  string  $key
-     * @return int
      */
     public function remaining(string $period, string $key): int
     {
@@ -38,11 +34,6 @@ class RateLimiterManager
 
     /**
      * Determine if the given key has too many attempts.
-     *
-     * @param  string  $period
-     * @param  string  $key
-     * @param  int  $maxAttempts
-     * @return bool
      */
     public function tooManyAttempts(string $period, string $key, int $maxAttempts): bool
     {
@@ -51,10 +42,6 @@ class RateLimiterManager
 
     /**
      * Get the number of attempts for the given key.
-     *
-     * @param  string  $period
-     * @param  string  $key
-     * @return int
      */
     public function attempts(string $period, string $key): int
     {
@@ -63,11 +50,6 @@ class RateLimiterManager
 
     /**
      * Increment the counter for a given key for a given period.
-     *
-     * @param  string  $period
-     * @param  string  $key
-     * @param  int  $decaySeconds
-     * @return void
      */
     public function hit(string $period, string $key, int $decaySeconds = 60): void
     {
@@ -82,10 +64,6 @@ class RateLimiterManager
 
     /**
      * Clear the attempts for the given key.
-     *
-     * @param  string  $period
-     * @param  string  $key
-     * @return void
      */
     public function clear(string $period, string $key): void
     {
@@ -94,10 +72,6 @@ class RateLimiterManager
 
     /**
      * Get the full limiter key for a given period and key.
-     *
-     * @param  string  $period
-     * @param  string  $key
-     * @return string
      */
     protected function getLimiterKey(string $period, string $key): string
     {

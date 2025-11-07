@@ -53,6 +53,7 @@ class RateLimiterServiceProvider extends ServiceProvider
         // Minute-based rate limiter
         RateLimiter::for('throttle-minute', function (Request $request) use ($minuteLimit) {
             $key = $request->user()?->id ?: $request->ip();
+
             return Limit::perMinute($minuteLimit)->by($key);
         });
 
@@ -62,7 +63,7 @@ class RateLimiterServiceProvider extends ServiceProvider
 
             // Using perMinute with 60 minutes decay (1 hour)
             return Limit::perMinute($hourLimit)
-                ->by('hour:' . $key);
+                ->by('hour:'.$key);
         });
 
         // Day-based rate limiter
@@ -71,12 +72,12 @@ class RateLimiterServiceProvider extends ServiceProvider
 
             // Using perDay method if available (Laravel 8+)
             if (method_exists(Limit::class, 'perDay')) {
-                return Limit::perDay($dayLimit)->by('day:' . $key);
+                return Limit::perDay($dayLimit)->by('day:'.$key);
             }
 
             // Fallback for older Laravel versions
             return Limit::perMinute($dayLimit)
-                ->by('day:' . $key);
+                ->by('day:'.$key);
         });
     }
 }

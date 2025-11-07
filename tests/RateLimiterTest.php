@@ -36,7 +36,7 @@ class RateLimiterTest extends TestCase
         $request = Request::create('/test', 'GET');
         $request->server->set('REMOTE_ADDR', '127.0.0.1');
 
-        $middleware = new MultiPeriodRateLimiter();
+        $middleware = new MultiPeriodRateLimiter;
 
         $response = $middleware->handle($request, function () {
             return new Response('Test Response');
@@ -57,7 +57,7 @@ class RateLimiterTest extends TestCase
         $request = Request::create('/test', 'GET');
         $request->server->set('REMOTE_ADDR', '127.0.0.1');
 
-        $middleware = new MultiPeriodRateLimiter();
+        $middleware = new MultiPeriodRateLimiter;
 
         // First request
         $response1 = $middleware->handle($request, function () {
@@ -80,7 +80,7 @@ class RateLimiterTest extends TestCase
         $request = Request::create('/test', 'GET');
         $request->server->set('REMOTE_ADDR', '127.0.0.1');
 
-        $middleware = new MultiPeriodRateLimiter();
+        $middleware = new MultiPeriodRateLimiter;
 
         // Manually exhaust the limit
         for ($i = 0; $i < 10; $i++) {

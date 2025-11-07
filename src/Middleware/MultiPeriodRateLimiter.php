@@ -24,8 +24,6 @@ class MultiPeriodRateLimiter
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -35,8 +33,8 @@ class MultiPeriodRateLimiter
 
         // Define user-specific keys for rate limiters
         $minuteKey = $key;
-        $hourKey = 'hour:' . $key;
-        $dayKey = 'day:' . $key;
+        $hourKey = 'hour:'.$key;
+        $dayKey = 'day:'.$key;
 
         // Get limits from config
         $minuteLimit = Config::get('rate-limiter.limits.minute', 60);
@@ -48,17 +46,17 @@ class MultiPeriodRateLimiter
             $limitKey = $period === 'minute' ? $minuteKey : ($period === 'hour' ? $hourKey : $dayKey);
             $limit = $period === 'minute' ? $minuteLimit : ($period === 'hour' ? $hourLimit : $dayLimit);
 
-            if (RateLimiter::tooManyAttempts($limiterName . ':' . $limitKey, $limit)) {
-                $seconds = RateLimiter::availableIn($limiterName . ':' . $limitKey);
+            if (RateLimiter::tooManyAttempts($limiterName.':'.$limitKey, $limit)) {
+                $seconds = RateLimiter::availableIn($limiterName.':'.$limitKey);
 
                 return $this->buildTooManyAttemptsResponse($request, $period, $seconds);
             }
         }
 
         // Increment the attempts for each limiter
-        RateLimiter::hit($this->limiters['minute'] . ':' . $minuteKey);
-        RateLimiter::hit($this->limiters['hour'] . ':' . $hourKey);
-        RateLimiter::hit($this->limiters['day'] . ':' . $dayKey);
+        RateLimiter::hit($this->limiters['minute'].':'.$minuteKey);
+        RateLimiter::hit($this->limiters['hour'].':'.$hourKey);
+        RateLimiter::hit($this->limiters['day'].':'.$dayKey);
 
         // Process the request
         $response = $next($request);
@@ -69,23 +67,14 @@ class MultiPeriodRateLimiter
             $minuteLimit,
             $hourLimit,
             $dayLimit,
-            $this->getRemainingAttempts($this->limiters['minute'] . ':' . $minuteKey, $minuteLimit),
-            $this->getRemainingAttempts($this->limiters['hour'] . ':' . $hourKey, $hourLimit),
-            $this->getRemainingAttempts($this->limiters['day'] . ':' . $dayKey, $dayLimit)
+            $this->getRemainingAttempts($this->limiters['minute'].':'.$minuteKey, $minuteLimit),
+            $this->getRemainingAttempts($this->limiters['hour'].':'.$hourKey, $hourLimit),
+            $this->getRemainingAttempts($this->limiters['day'].':'.$dayKey, $dayLimit)
         );
     }
 
     /**
      * Add the rate limit headers to the response.
-     *
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
-     * @param  int  $minuteLimit
-     * @param  int  $hourLimit
-     * @param  int  $dayLimit
-     * @param  int  $minuteRemaining
-     * @param  int  $hourRemaining
-     * @param  int  $dayRemaining
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function addHeaders(
         Response $response,
@@ -114,10 +103,6 @@ class MultiPeriodRateLimiter
 
     /**
      * Get the number of remaining attempts for a given rate limiter.
-     *
-     * @param  string  $key
-     * @param  int  $maxAttempts
-     * @return int
      */
     protected function getRemainingAttempts(string $key, int $maxAttempts): int
     {
@@ -130,17 +115,12 @@ class MultiPeriodRateLimiter
 
     /**
      * Build the response for when too many attempts have been made.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $period
-     * @param  int  $seconds
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function buildTooManyAttemptsResponse(Request $request, string $period, int $seconds): Response
     {
         $message = sprintf(
             'Too many attempts. Please try again in %s %s.',
-            $seconds > 60 ? ceil($seconds / 60) . ' minutes' : $seconds . ' seconds',
+            $seconds > 60 ? ceil($seconds / 60).' minutes' : $seconds.' seconds',
             $period
         );
 
